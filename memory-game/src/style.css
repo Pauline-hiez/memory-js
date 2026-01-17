@@ -1,0 +1,186 @@
+/* === Game.css === */
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 40px;
+}
+
+.login {
+    margin-right: 40px;
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.stat-bulle {
+    background: #e0e0e0;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+}
+
+.btn {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 18px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.btn:active {
+    background: #115293;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 90px);
+    grid-gap: 15px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card {
+    width: 80px;
+    height: 80px;
+    background: #bdbdbd;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
+.card:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    text-align: center;
+}
+
+/* === Top10.css === */
+.bulle {
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.top-10-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-10 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.top-10-title {
+    margin: 0 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.winner-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table th,
+.table td {
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.table th {
+    background: #1976d2;
+    color: #fff;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+/* === Finish.css === */
+.bulle-victory {
+    background: #f7f7f7;
+    padding: 30px 40px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.victory-flex {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.victory-content {
+    text-align: center;
+}
+
+.victory-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #388e3c;
+}
+
+.victory-links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* === Profil.css === */
+.profil-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.profil {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.profil-history-title {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
