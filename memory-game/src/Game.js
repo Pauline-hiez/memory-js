@@ -149,14 +149,17 @@ function Game({ pseudo, nbPaires, goProfil }) {
 
     return (
         <>
-            {showFireworks && <Fireworks trigger={showFireworks} />}
+            {showFireworks && showEnd && <Fireworks trigger={showFireworks} />}
             <div className="container">
                 {showEnd && (
                     <div className="end-modal">
                         <div className="end-content">
                             <button
                                 aria-label="Fermer"
-                                onClick={() => setShowEnd(false)}
+                                onClick={() => {
+                                    setShowEnd(false);
+                                    setShowFireworks(false);
+                                }}
                                 style={{
                                     position: 'absolute',
                                     top: 12,
@@ -175,8 +178,8 @@ function Game({ pseudo, nbPaires, goProfil }) {
                             <p>Joueur : <b>{pseudo || 'Anonyme'}</b></p>
                             <p>Nombre de coups : <b>{moves}</b></p>
                             <p>Temps : <b>{formatTime(duration)}</b></p>
-                            <button className="btn" onClick={handleRestart} style={{ marginTop: 16 }}>Rejouer</button>
-                            <button className="btn" style={{ marginTop: 8, marginLeft: 8 }} onClick={goProfil}>Voir le profil</button>
+                            <button className="btn" onClick={() => { handleRestart(); setShowFireworks(false); }} style={{ marginTop: 16 }}>Rejouer</button>
+                            <button className="btn" style={{ marginTop: 8, marginLeft: 8 }} onClick={() => { setShowEnd(false); setShowFireworks(false); goProfil(); }}>Voir le profil</button>
                             <button
                                 aria-label="Fermer"
                                 onClick={() => setShowEnd(false)}

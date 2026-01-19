@@ -65,7 +65,7 @@ function App() {
         </div>
       )}
       {page === 'game' && pseudo && <Game pseudo={pseudo} nbPaires={nbPaires} goProfil={() => setPage('profil')} />}
-      {page === 'profil' && <Profil />}
+      {page === 'profil' && <Profil login={pseudo} />}
       {page === 'top10' && <Top10 />}
     </PlayerProvider>
   );

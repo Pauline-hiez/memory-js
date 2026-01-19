@@ -1,16 +1,32 @@
+
 import React, { useEffect, useRef } from 'react';
 
 function Fireworks({ trigger }) {
     const canvasRef = useRef();
 
+    // Efface le canvas dès que trigger passe à false
     useEffect(() => {
-        if (!trigger) return;
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!trigger) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }, [trigger]);
+
+    useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
         let animationFrameId;
         let particles = [];
         const colors = ['#ff5252', '#ffd600', '#69f0ae', '#40c4ff', '#ff4081'];
+
+        // Si trigger est désactivé, efface le canvas et ne lance pas l'animation
+        if (!trigger) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            return undefined;
+        }
 
         function createFirework() {
             const x = Math.random() * canvas.width;
@@ -61,7 +77,10 @@ function Fireworks({ trigger }) {
         }
 
         loop();
-        return () => cancelAnimationFrame(animationFrameId);
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        };
     }, [trigger]);
 
     return (

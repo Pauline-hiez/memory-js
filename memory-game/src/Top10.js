@@ -1,9 +1,5 @@
 import React from 'react';
 
-// Exemple de données fictives (à remplacer par un fetch API ou props)
-const top10 = [
-    // { username: 'Alice', moves: 12, time_seconds: 75, played_at: '2026-01-17' },
-];
 
 function formatTime(seconds) {
     if (seconds == null) return '-';
@@ -11,8 +7,22 @@ function formatTime(seconds) {
     const sec = String(seconds % 60).padStart(2, '0');
     return `${min}:${sec}`;
 }
-
+function getTop10() {
+    const history = JSON.parse(localStorage.getItem('globalHistory') || '[]');
+    // Trie par nombre de coups croissant, puis temps croissant
+    history.sort((a, b) => {
+        if (a.moves !== b.moves) return a.moves - b.moves;
+        return a.duration - b.duration;
+    });
+    return history.slice(0, 10);
+}
 function Top10() {
+    const [top10, setTop10] = React.useState([]);
+
+    React.useEffect(() => {
+        setTop10(getTop10());
+    }, []);
+
     return (
         <div className="container">
             <div className="top10-table-blur">
@@ -38,13 +48,11 @@ function Top10() {
                                 else if (i === 2) medal = '🥉';
                                 return (
                                     <tr key={i}>
-                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{i + 1}</td>
-                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>
-                                            {h.username} {medal && <span style={{ marginLeft: 8 }}>{medal}</span>}
-                                        </td>
+                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{i + 1} {medal}</td>
+                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{h.pseudo}</td>
                                         <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{h.moves}</td>
-                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{formatTime(h.time_seconds)}</td>
-                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{h.played_at || ''}</td>
+                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{formatTime(h.duration)}</td>
+                                        <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{h.date}</td>
                                     </tr>
                                 );
                             })}
@@ -55,5 +63,4 @@ function Top10() {
         </div>
     );
 }
-
 export default Top10;
