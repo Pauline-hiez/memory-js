@@ -1,3 +1,314 @@
+.card:not(:disabled):hover {
+  box-shadow: 0 6px 24px rgba(4, 147, 83, 0.25), 0 1.5px 8px rgba(0, 0, 0, 0.10);
+  transform: translateY(-4px) scale(1.04);
+  transition: box-shadow 0.18s, transform 0.18s;
+  z-index: 2;
+}
+
+/* Effet blur et transparence pour le tableau Top 10 et Profil */
+.top10-table-blur {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+  padding: 2.5rem 3.5rem 2.5rem 3.5rem;
+  margin: 2rem;
+  min-width: 220px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Arrondi sur le tableau Top 10 et Profil */
+.top10-table-blur table {
+  border-radius: 12px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.card:not(:disabled):hover {
+  box-shadow: 0 6px 24px rgba(4, 147, 83, 0.25), 0 1.5px 8px rgba(0, 0, 0, 0.10);
+  transform: translateY(-4px) scale(1.04);
+  transition: box-shadow 0.18s, transform 0.18s;
+  z-index: 2;
+}
+
+/* Arrondi sur le tableau Top 10 et Profil */
+.top10-table-blur table {
+  border-radius: 12px;
+  overflow: hidden;
+  /* Pour certains navigateurs, il faut aussi : */
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Effet blur et transparence pour le tableau Top 10 */
+.top10-table-blur {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+  padding: 2.5rem 3.5rem 2.5rem 3.5rem;
+  margin: 2rem;
+  min-width: 220px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Modal de fin de partie */
+.end-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.end-content {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+  padding: 2.5rem 3.5rem 2.5rem 3.5rem;
+  min-width: 320px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  text-align: center;
+  position: relative;
+  z-index: 1200;
+}
+
+.end-content {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+  padding: 2.5rem 3.5rem 2.5rem 3.5rem;
+  min-width: 320px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  text-align: center;
+  position: relative;
+  z-index: 1200;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@property --ang {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: true;
+}
+
+
+.card-front.bordered-animate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 20px;
+  padding: 0;
+  box-sizing: border-box;
+  background:
+    conic-gradient(from var(--ang), #00ff55 0 20%, #0000 40% 100%);
+  border: 6px solid transparent;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-anim-ang 0.8s linear 1;
+}
+
+.card-front.bordered-animate {
+  position: relative;
+  /* plus de border ni de background ici */
+}
+
+@keyframes border-anim-ang {
+  from {
+    --ang: 0deg;
+  }
+
+  to {
+    --ang: 1turn;
+  }
+}
+
+/* Centrage des images dans les cartes */
+.card-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 220px;
+}
+
+.card {
+  perspective: 800px;
+  position: relative;
+}
+
+.card-inner {
+  transition: transform 0.5s cubic-bezier(.4, 2, .3, 1);
+  transform-style: preserve-3d;
+  position: relative;
+  width: 160px;
+  height: 220px;
+}
+
+.card.flip .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 160px;
+  height: 220px;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+}
+
+.card-back {
+  background: #fff;
+  z-index: 2;
+}
+
+.card-front {
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+body,
+html {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+body {
+  background: url('./img/fond.avif') center center/cover no-repeat fixed;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.login {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+  padding: 2.5rem 3.5rem 2.5rem 3.5rem;
+  margin: 2rem;
+  min-width: 220px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+
+.stat-bulle p {
+  background: transparent !important;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.stat-bulle p {
+  background: transparent !important;
+}
+
+.form-pseudo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn {
+  background: #049353;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background: #026f3e;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 220px);
+  gap: 32px 32px;
+  background: transparent;
+  padding: 2rem 0;
+  margin: 2rem 0;
+  justify-items: center;
+}
+
+.card {
+  background: #fff;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card:disabled {
+  cursor: default;
+  /* opacity: 0.7; */
+}
+
+.card img {
+  width: 160px;
+  height: 220px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center {
+  flex: 1;
+}
+
 .App {
   text-align: center;
 }
@@ -32,7 +343,35 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+nav {
+  background: #049353;
+  padding: 1.2rem 0 1.2rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  align-items: center;
+  color: #fff;
+  margin-bottom: 2.5rem;
+  font-family: 'Caveat', cursive, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
 }
