@@ -3,6 +3,7 @@ import Fireworks from './Fireworks';
 import PlayerContext from './PlayerContext';
 import './App.css';
 
+// Liste des images disponibles pour les cartes
 const imageNames = [
     'butters.png',
     'cartman.webp',
@@ -16,6 +17,7 @@ const imageNames = [
     'stan.webp',
 ];
 
+// Mélange un tableau (algorithme de Fisher-Yates)
 function shuffle(array) {
     let arr = array.slice();
     for (let i = arr.length - 1; i > 0; i--) {
@@ -25,8 +27,8 @@ function shuffle(array) {
     return arr;
 }
 
+// Génère un deck de nbPaires paires aléatoires parmi les images
 function getDeck(nbPaires) {
-    // nbPaires paires aléatoires parmi les images
     const selected = shuffle(imageNames).slice(0, nbPaires);
     const deck = shuffle([...selected, ...selected]);
     return deck.map((img, idx) => ({
@@ -37,38 +39,50 @@ function getDeck(nbPaires) {
     }));
 }
 
+// Formate un nombre de secondes en mm:ss
 function formatTime(s) {
     const min = String(Math.floor(s / 60)).padStart(2, '0');
     const sec = String(s % 60).padStart(2, '0');
     return `${min}:${sec}`;
 }
 
+// Composant principal du jeu de mémoire
 function Game({ pseudo, nbPaires, goProfil }) {
+    // État du deck de cartes
     const [deck, setDeck] = useState(getDeck(nbPaires));
+    // Indices des deux cartes retournées
     const [first, setFirst] = useState(null);
     const [second, setSecond] = useState(null);
+    // Nombre de coups joués
     const [moves, setMoves] = useState(0);
+    // Verrouillage pour empêcher de retourner plus de 2 cartes
     const [lock, setLock] = useState(false);
+    // Chronométrage
     const [startTime, setStartTime] = useState(Date.now());
     const [duration, setDuration] = useState(0);
+    // Contexte joueur
     const { setPlayer, addGame } = useContext(PlayerContext);
+    // Contrôle des animations et de la modale de fin
     const [showFireworks, setShowFireworks] = useState(false);
     const [showEnd, setShowEnd] = useState(false);
 
+    // Met à jour le joueur courant dans le contexte
     useEffect(() => {
         setPlayer(pseudo);
     }, [pseudo, setPlayer]);
 
+    // Effet : vérifie si deux cartes sont retournées, compare et gère la logique de match
     useEffect(() => {
         if (first !== null && second !== null) {
             setLock(true);
             setDeck(d => {
+                // Normalise les noms d'image pour comparer
                 const normalize = s => s && s.toLowerCase().replace(/\s+/g, '').replace(/\.[a-z0-9]+$/, '');
                 const normFirst = normalize(d[first].img);
                 const normSecond = normalize(d[second].img);
-                console.log('Comparaison:', d[first].img, 'vs', d[second].img, '| normalisés:', normFirst, 'vs', normSecond);
+                // Si les deux cartes sont identiques
                 if (normFirst === normSecond) {
-                    // Ajoute la bordure animée temporairement
+                    // Animation de bordure puis marquage comme matched
                     setTimeout(() => {
                         setDeck(dd => dd.map((card, i) =>
                             i === first || i === second ? { ...card, matched: true, bordered: false } : card
@@ -81,6 +95,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                         i === first || i === second ? { ...card, revealed: true, bordered: true } : card
                     );
                 } else {
+                    // Sinon, retourne les cartes après un délai
                     setTimeout(() => {
                         setDeck(dd => dd.map((card, i) =>
                             i === first || i === second ? { ...card, revealed: false } : card
@@ -96,13 +111,14 @@ function Game({ pseudo, nbPaires, goProfil }) {
         }
     }, [first, second]);
 
+    // Effet : si toutes les cartes sont matched, affiche la modale de fin et sauvegarde la partie
     useEffect(() => {
         if (deck.every(card => card.matched)) {
             setShowFireworks(true);
             setShowEnd(true);
             setTimeout(() => {
                 addGame(moves, duration);
-                // Ajout au classement global (localStorage)
+                // Ajoute la partie à l'historique global (localStorage)
                 const globalHistory = JSON.parse(localStorage.getItem('globalHistory') || '[]');
                 globalHistory.push({ pseudo: pseudo || 'Anonyme', moves, duration, date: new Date().toLocaleString() });
                 localStorage.setItem('globalHistory', JSON.stringify(globalHistory));
@@ -110,6 +126,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
         }
     }, [deck]);
 
+    // Effet : met à jour le chrono toutes les secondes
     useEffect(() => {
         const timer = setInterval(() => {
             setDuration(Math.floor((Date.now() - startTime) / 1000));
@@ -117,6 +134,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
         return () => clearInterval(timer);
     }, [startTime]);
 
+    // Gère le clic sur une carte : retourne la carte si possible
     const handleCardClick = idx => {
         if (lock || deck[idx].revealed || deck[idx].matched) return;
         setDeck(d => d.map((card, i) => i === idx ? { ...card, revealed: true } : card));
@@ -127,6 +145,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
         }
     };
 
+    // Effet : relance une nouvelle partie si le nombre de paires change
     useEffect(() => {
         setDeck(getDeck(nbPaires));
         setFirst(null);
@@ -136,6 +155,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
         setStartTime(Date.now());
     }, [nbPaires]);
 
+    // Relance une nouvelle partie (bouton recommencer)
     const handleRestart = () => {
         setDeck(getDeck(nbPaires));
         setFirst(null);
@@ -147,13 +167,17 @@ function Game({ pseudo, nbPaires, goProfil }) {
         setShowEnd(false);
     };
 
+    // Rendu du composant : modale de fin, stats, grille de jeu
     return (
         <>
+            {/* Affiche les feux d'artifice à la fin */}
             {showFireworks && showEnd && <Fireworks trigger={showFireworks} />}
             <div className="container">
+                {/* Modale de fin de partie */}
                 {showEnd && (
                     <div className="end-modal">
                         <div className="end-content">
+                            {/* Bouton fermer */}
                             <button
                                 aria-label="Fermer"
                                 onClick={() => {
@@ -178,8 +202,11 @@ function Game({ pseudo, nbPaires, goProfil }) {
                             <p>Joueur : <b>{pseudo || 'Anonyme'}</b></p>
                             <p>Nombre de coups : <b>{moves}</b></p>
                             <p>Temps : <b>{formatTime(duration)}</b></p>
+                            {/* Bouton rejouer */}
                             <button className="btn" onClick={() => { handleRestart(); setShowFireworks(false); }} style={{ marginTop: 16 }}>Rejouer</button>
+                            {/* Bouton voir le profil */}
                             <button className="btn" style={{ marginTop: 8, marginLeft: 8 }} onClick={() => { setShowEnd(false); setShowFireworks(false); goProfil(); }}>Voir le profil</button>
+                            {/* Bouton fermer bis */}
                             <button
                                 aria-label="Fermer"
                                 onClick={() => setShowEnd(false)}
@@ -200,6 +227,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                         </div>
                     </div>
                 )}
+                {/* Bloc stats et bouton recommencer */}
                 <div className="login" style={showEnd ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
                     <h2>Votre partie, {pseudo}</h2>
                     <div className="stat-bulle">
@@ -210,6 +238,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                         <button className="btn" type="submit">Recommencer</button>
                     </form>
                 </div>
+                {/* Grille de cartes */}
                 <div className="game-grid" id="game-grid" style={showEnd ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
                     {deck.map((card, i) => (
                         <div key={card.id}>
@@ -219,6 +248,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                                 onClick={() => handleCardClick(i)}
                             >
                                 <div className="card-inner">
+                                    {/* Dos de la carte */}
                                     <div className="card-back">
                                         <div className="card-image-container">
                                             <img
@@ -228,6 +258,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                                             />
                                         </div>
                                     </div>
+                                    {/* Face de la carte */}
                                     <div className={`card-front${card.bordered ? ' bordered-animate' : ''}`}>
                                         <div className="card-image-container">
                                             <img
