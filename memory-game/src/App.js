@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Game from './Game';
 import Profil from './Profil';
 import Top10 from './Top10';
+import Button from './components/Button/Button';
+import Title from './components/Title/Title';
 import { PlayerProvider } from './PlayerContext';
 import './App.css';
 
@@ -29,7 +31,7 @@ function App() {
       {/* Barre de navigation principale */}
       <nav style={{ background: '#049353', padding: '0.7rem 2rem', display: 'flex', gap: 20, alignItems: 'center', color: '#fff', marginBottom: 0 }}>
         {navItems.map(item => (
-          <button
+          <Button
             key={item.page}
             className="btn"
             style={{ background: page === item.page ? '#026f3e' : '#049353', color: '#fff', margin: 0, border: 'none', borderRadius: 6, fontWeight: 'bold' }}
@@ -44,7 +46,7 @@ function App() {
             }
           >
             {item.label}
-          </button>
+          </Button>
         ))}
       </nav>
 
@@ -52,7 +54,7 @@ function App() {
       {page === 'login' && (
         <div className="container">
           <div className="login">
-            <h2>Bienvenue !</h2>
+            <Title>Bienvenue !</Title>
             <form onSubmit={e => { e.preventDefault(); if (pseudo) setPage('game'); }}>
               {/* Champ pour entrer le pseudo */}
               <input
@@ -76,7 +78,7 @@ function App() {
                 ))}
               </select>
               {/* Bouton pour lancer la partie */}
-              <button className="btn" type="submit" disabled={!pseudo}>Jouer</button>
+              <Button className="btn" type="submit" disabled={!pseudo}>Jouer</Button>
             </form>
           </div>
         </div>

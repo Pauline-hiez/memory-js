@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Fireworks from './Fireworks';
 import PlayerContext from './PlayerContext';
+import Button from './components/Button/Button';
+import Card from './components/Card/Card';
+import Title from './components/Title/Title';
 import './App.css';
 
 // Liste des images disponibles pour les cartes
@@ -178,7 +181,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                     <div className="end-modal">
                         <div className="end-content">
                             {/* Bouton fermer */}
-                            <button
+                            <Button
                                 aria-label="Fermer"
                                 onClick={() => {
                                     setShowEnd(false);
@@ -197,17 +200,17 @@ function Game({ pseudo, nbPaires, goProfil }) {
                                 }}
                             >
                                 ×
-                            </button>
-                            <h2>Partie terminée !</h2>
+                            </Button>
+                            <Title>Partie terminée !</Title>
                             <p>Joueur : <b>{pseudo || 'Anonyme'}</b></p>
                             <p>Nombre de coups : <b>{moves}</b></p>
                             <p>Temps : <b>{formatTime(duration)}</b></p>
                             {/* Bouton rejouer */}
-                            <button className="btn" onClick={() => { handleRestart(); setShowFireworks(false); }} style={{ marginTop: 16 }}>Rejouer</button>
+                            <Button className="btn" onClick={() => { handleRestart(); setShowFireworks(false); }} style={{ marginTop: 16 }}>Rejouer</Button>
                             {/* Bouton voir le profil */}
-                            <button className="btn" style={{ marginTop: 8, marginLeft: 8 }} onClick={() => { setShowEnd(false); setShowFireworks(false); goProfil(); }}>Voir le profil</button>
+                            <Button className="btn" style={{ marginTop: 8, marginLeft: 8 }} onClick={() => { setShowEnd(false); setShowFireworks(false); goProfil(); }}>Voir le profil</Button>
                             {/* Bouton fermer bis */}
-                            <button
+                            <Button
                                 aria-label="Fermer"
                                 onClick={() => setShowEnd(false)}
                                 style={{
@@ -223,53 +226,32 @@ function Game({ pseudo, nbPaires, goProfil }) {
                                 }}
                             >
                                 ×
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 )}
                 {/* Bloc stats et bouton recommencer */}
                 <div className="login" style={showEnd ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
-                    <h2>Votre partie, {pseudo}</h2>
+                    <Title>Votre partie, {pseudo}</Title>
                     <div className="stat-bulle">
                         <p>Nombre de coups : {moves}</p>
                         <p>Temps : {formatTime(duration)}</p>
                     </div>
                     <form className="form-pseudo" onSubmit={e => { e.preventDefault(); handleRestart(); }}>
-                        <button className="btn" type="submit">Recommencer</button>
+                        <Button className="btn" type="submit">Recommencer</Button>
                     </form>
                 </div>
                 {/* Grille de cartes */}
                 <div className="game-grid" id="game-grid" style={showEnd ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
                     {deck.map((card, i) => (
                         <div key={card.id}>
-                            <button
-                                className={`card${card.revealed || card.matched ? ' flip' : ''}`}
-                                disabled={card.revealed || card.matched || lock}
+                            <Card
+                                image={require(`./img/${card.img}`)}
+                                isFlipped={card.revealed || card.matched}
+                                isMatched={card.matched}
                                 onClick={() => handleCardClick(i)}
-                            >
-                                <div className="card-inner">
-                                    {/* Dos de la carte */}
-                                    <div className="card-back">
-                                        <div className="card-image-container">
-                                            <img
-                                                src={require('./img/carte.webp')}
-                                                alt="dos de carte"
-                                                style={{ width: '140px', height: '200px', objectFit: 'cover' }}
-                                            />
-                                        </div>
-                                    </div>
-                                    {/* Face de la carte */}
-                                    <div className={`card-front${card.bordered ? ' bordered-animate' : ''}`}>
-                                        <div className="card-image-container">
-                                            <img
-                                                src={require(`./img/${card.img}`)}
-                                                alt="carte"
-                                                style={{ width: '140px', height: '200px', objectFit: 'contain' }}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </button>
+                                disabled={card.revealed || card.matched || lock}
+                            />
                         </div>
                     ))}
                 </div>

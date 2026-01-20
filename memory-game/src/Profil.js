@@ -1,5 +1,6 @@
 // Import de React pour utiliser les hooks et JSX
 import React from 'react';
+import Title from './components/Title/Title';
 
 // Formate un nombre de secondes en mm:ss
 function formatTime(seconds) {
@@ -28,8 +29,8 @@ function Profil({ login = 'Joueur' }) {
         <div className="container">
             <div className="top10-table-blur">
                 {/* Titre du profil */}
-                <h2>Profil de {login}</h2>
-                <h3>Historique des parties</h3>
+                <Title>Profil de {login}</Title>
+                <Title as="h3">Historique des parties</Title>
                 {/* Affiche un message si aucune partie n'a été jouée */}
                 {history.length === 0 ? (
                     <p>Aucune partie jouée.</p>
