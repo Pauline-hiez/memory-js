@@ -224,7 +224,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                                             <img
                                                 src={require('./img/carte.webp')}
                                                 alt="dos de carte"
-                                                style={{ width: '160px', height: '220px', objectFit: 'cover' }}
+                                                style={{ width: '140px', height: '200px', objectFit: 'cover' }}
                                             />
                                         </div>
                                     </div>
@@ -233,7 +233,7 @@ function Game({ pseudo, nbPaires, goProfil }) {
                                             <img
                                                 src={require(`./img/${card.img}`)}
                                                 alt="carte"
-                                                style={{ width: '160px', height: '220px', objectFit: 'contain' }}
+                                                style={{ width: '140px', height: '200px', objectFit: 'contain' }}
                                             />
                                         </div>
                                     </div>
